@@ -61,8 +61,11 @@ public class ToggleLockscreenTile extends QuickSettingsTile
 
     @Override
     public void onDestroy() {
-        if (mLock != null) {
-            mLock.reenableKeyguard();
+        mPrefs.unregisterOnSharedPreferenceChangeListener(this);
+        sLockTileCount--;
+        if (sLock != null && sLockTileCount < 1 && sDisabledLockscreen) {
+            sLock.reenableKeyguard();
+            sLock = null;
         }
         super.onDestroy();
     }
